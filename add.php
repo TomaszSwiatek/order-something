@@ -6,12 +6,15 @@
 //     echo $_GET['title'];
 //     echo $_GET['ingredients'];
 // }
+//array of errors to store them, and show in inteface form:
+$errors = array('email' => '', 'title' => '', 'ingredients' => '');
+
 if (isset($_POST['submit'])) {
 
 
     //check email
     if (empty($_POST['email'])) { //if field is empty:
-        echo 'An email is required <br>';
+        $errors['email'] = 'An email is required <br>';
     } else {
         // if not:
         // echo htmlspecialchars($_POST['email']);
@@ -20,7 +23,7 @@ if (isset($_POST['submit'])) {
         $email = $_POST['email'];
         //WE PLACE negation operator becouse we want to show message, if email variable isn't proper.
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo 'this field must be a valid email address';
+            $errors['email'] = 'This field must be a valid email address';
             //meth. filter_var takes to arguments: first the variable we want to filter, second - type of filter that we want to apply
 
         }
@@ -28,25 +31,25 @@ if (isset($_POST['submit'])) {
 
     //check title
     if (empty($_POST['title'])) { //if field is empty:
-        echo 'An title is required <br>';
+        $errors['title'] = 'An title is required <br>';
     } else {
         // if not do the code:
         $title = $_POST['title'];
         // we have to negate becouse we want to show info, we input content doesnt match to pattern.
         if (!preg_match('/^[a-zA-Z\s]+$/', $title)) {  //this is how we match something to regular expression. first arg. is an regular expression, second: varieble we match to our own expression
-            echo 'Title must be letters and spaces only';
+            $errors['title'] = 'Title must be letters and spaces only';
         }
     }
 
     //check ingredients
     if (empty($_POST['ingredients'])) { //if field is empty:
-        echo 'At least one ingredient is required <br>';
+        $errors['ingredients'] = 'At least one ingredient is required <br>';
     } else {
         // if not:
         $ingredients = $_POST['ingredients'];
         if (!preg_match('/^([a-zA-Z\s]+)(,\s*[a-zA-Z\s]*)*$/', $ingredients)) { //reg ex - list comma separated only.
             //if field isnt filled out properly (so error handling):
-            echo 'Please write out only ingredients and separate them with comma!';
+            $errors['ingredients'] = 'Please write out only ingredients and separate them with comma!';
         }
     }
 };
@@ -64,13 +67,18 @@ if (isset($_POST['submit'])) {
     <h4 class="center">Add something</h4>
     <form action="add.php" method="POST" class="white">
         <label for="">Your Email:</label>
-        <input type="text" name="email">
+        <input type="text" name="email" value="<?php echo empty($email) ? '' : $email;  ?>">
+        <div class="error-text"><?php echo $errors['email']; ?> </div>
 
         <label for="">Title:</label>
-        <input type="text" name="title">
+        <input type="text" name="title" value="<?php echo empty($title) ? '' : $title;  ?>">
+        <div class="error-text"><?php echo $errors['title']; ?></div>
+
 
         <label for="">Ingredients (comma separated):</label>
-        <input type="text" name="ingredients">
+        <input type="text" name="ingredients" value="<?php echo empty($ingredients) ? '' : $ingredients ?>">
+        <div class="error-text"><?php echo $errors['ingredients']; ?></div>
+
         <div class="center">
             <input type="submit" name="submit" value="submit" class="btn brand z-depth-0">
         </div>
