@@ -1,4 +1,5 @@
 <?php
+include('config/db_connect.php');  //db connection so we can save something to db;
 //isset method checks is send everything to a server
 // $_GET - it is globsal array where we store parameters/data sent with get request. so it checks is sent submit  value to this array or not? (this value is send after click submit button/input)
 // if (isset($_GET['submit'])) {
@@ -57,11 +58,22 @@ if (isset($_POST['submit'])) {
 
     if (!array_filter($errors)) {
 
+        //we overwrite variables to avoid harmful code added to db:
+        $email = mysqli_real_escape_string($conn, $_POST['email']); // email is from name in input. $conn goes from external db_connect.php file.
+        $title = mysqli_real_escape_string($conn, $_POST['title']);
+        $ingredients = mysqli_real_escape_string($conn, $_POST['ingredients']);
 
-        header('Location: index.php'); //return true if something is in our errors array (but we negate it so we react to situation when is no errors - we move back to main page.);
-
+        //create sql code to save above data to our sql db - thats only query - it dont save it!
+        $sql = "INSERT INTO orders(title, email, ingredients) VALUES ('$title','$email','$ingredients')";
     }
-
+    // now if conn and query is alright save to db:
+    if (mysqli_query($conn, $sql)) { //this is in if statement but it does save to db!!!
+        // success
+        header('Location: index.php'); //return true if something is in our errors array (but we negate it so we react to situation when is no errors - we move back to main page.);
+    } else {
+        // error
+        echo 'query error (cant save to db): ' . mysqli_error($conn);
+    }
     // array_filter($errors) ?  'errors' :  'no errors';
 }; //END of post check
 

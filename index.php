@@ -1,70 +1,63 @@
-    <!-- underneath methods to connect to our database ( we ve been created that with xampp, but it can also be real database on other machine/server - not my pc.) -->
-    <!-- MySQLi ( more procedural manner) or PDO (oo approach) approach. We ll proceed firstly with mySqli but better one is PDO whats mean : php data objects. -->
-    <?php
-    // connect to database
-    $conn = mysqli_connect('localhost', 'ofc', 'test123', 'order-something'); //host we choose in db, user name, pw, name of database we ve created;
-    //check connection (error handling - if here is no connection):
-    if (!$conn) {
-        echo 'Connection error: ' . mysqli_connect_error();  //gonna echo specific error in interface
-    }
+<?php
+include('config/db_connect.php');
 
-    $sql = 'SELECT title, ingredients, id FROM orders ORDER BY created_at'; //get all columns from orders table. ORDER BY sortus item in this case by timestamp
-    // make query and get result
-    $result = mysqli_query($conn, $sql);
-    //fetch the resulting rows as an array
-    $recipes = mysqli_fetch_all($result, MYSQLI_ASSOC); //MYSQLI_ASSOC = ASSOCIATIVE ARRAY KEY => VALUE as we rememeber
-    //after we ve fetched our data and saved in $receipts variable we can free result from memory
-    mysqli_free_result($result);
-    //and then close connection
-    mysqli_close($conn);
+$sql = 'SELECT title, ingredients, id FROM orders ORDER BY created_at'; //get all columns from orders table. ORDER BY sortus item in this case by timestamp
+// make query and get result
+$result = mysqli_query($conn, $sql);
+//fetch the resulting rows as an array
+$recipes = mysqli_fetch_all($result, MYSQLI_ASSOC); //MYSQLI_ASSOC = ASSOCIATIVE ARRAY KEY => VALUE as we rememeber
+//after we ve fetched our data and saved in $receipts variable we can free result from memory
+mysqli_free_result($result);
+//and then close connection
+mysqli_close($conn);
 
 
-    // print_r(explode(',', $recipes[0]['ingredients'])); // this method changes string to array - that's nice!
-    // print_r($recipes)  //echo out results on the top of the site, to check if its run
-    ?>
-    <!DOCTYPE html>
-    <html lang="en">
+// print_r(explode(',', $recipes[0]['ingredients'])); // this method changes string to array - that's nice!
+// print_r($recipes)  //echo out results on the top of the site, to check if its run
+?>
+<!DOCTYPE html>
+<html lang="en">
 
 
-    <?php require 'templates/header.php'; ?>
+<?php require 'templates/header.php'; ?>
 
-    <h4 class="center grey-text">Receipts!</h4>
-    <div class="container">
-        <div class="row">
-            <?php foreach ($recipes as $recipe) { ?>
-                <div class="col s6 md3">
-                    <div class="card z-depth-0">
-                        <div class="card-content center">
-                            <h6><?php echo htmlspecialchars($recipe['title']); ?></h6>
-                            <ul>
-                                <?php foreach (explode(',', $recipe['ingredients']) as $ingredient) { ?>
-                                    <li> <?php echo htmlspecialchars($ingredient);  ?></li>
-                                <?php     } ?>
-                            </ul>
-                        </div>
-                        <div class="card-action right-align">
-                            <a href="#" class="brand-text">more info</a>
-                        </div>
+<h4 class="center grey-text">Receipts!</h4>
+<div class="container">
+    <div class="row">
+        <?php foreach ($recipes as $recipe) { ?>
+            <div class="col s6 md3">
+                <div class="card z-depth-0">
+                    <div class="card-content center">
+                        <h6><?php echo htmlspecialchars($recipe['title']); ?></h6>
+                        <ul>
+                            <?php foreach (explode(',', $recipe['ingredients']) as $ingredient) { ?>
+                                <li> <?php echo htmlspecialchars($ingredient);  ?></li>
+                            <?php     } ?>
+                        </ul>
+                    </div>
+                    <div class="card-action right-align">
+                        <a href="#" class="brand-text">more info</a>
                     </div>
                 </div>
-            <?php   } ?>
+            </div>
+        <?php   } ?>
 
 
-        </div> <!-- end of row -->
-        <div class="row">
-            <!-- how many recipes are on site? -->
-            <?php if (count($recipes) <= 3) :
-            ?>
-                <p><?php echo 'There are only 3 or less recipes' ?></p>
-            <?php else : ?>
-                <p><?php echo 'There are more than 3 recipes' ?></p>
-            <?php endif; ?>
-            <!--END - how many recipes are on site? -->
-        </div> <!-- end of row -->
+    </div> <!-- end of row -->
+    <div class="row">
+        <!-- how many recipes are on site? -->
+        <?php if (count($recipes) <= 3) :
+        ?>
+            <p><?php echo 'There are only 3 or less recipes' ?></p>
+        <?php else : ?>
+            <p><?php echo 'There are more than 3 recipes' ?></p>
+        <?php endif; ?>
+        <!--END - how many recipes are on site? -->
+    </div> <!-- end of row -->
 
-    </div>
-    <?php require 'templates/footer.php'; ?>
+</div>
+<?php require 'templates/footer.php'; ?>
 
 
 
-    </html>
+</html>
