@@ -49,11 +49,19 @@ if (isset($_POST['submit'])) {
         $ingredients = $_POST['ingredients'];
         if (!preg_match('/^([a-zA-Z\s]+)(,\s*[a-zA-Z\s]*)*$/', $ingredients)) { //reg ex - list comma separated only.
             //if field isnt filled out properly (so error handling):
-            $errors['ingredients'] = 'Please write out only ingredients and separate them with comma!';
+            $errors['ingredients'] = 'Please write out only ingredients and separate them with comma (no special characters)!';
         }
     }
-};
-//END
+
+    //Are the errors in form or not - show info
+
+    if (!array_filter($errors)) {
+        header('Location: index.php'); //return true if something is in our errors array (but we negate it so we react to situation when is no errors - we move back to main page.);
+    }
+
+    // array_filter($errors) ?  'errors' :  'no errors';
+}; //END of post check
+
 
 
 ?>
@@ -67,16 +75,16 @@ if (isset($_POST['submit'])) {
     <h4 class="center">Add something</h4>
     <form action="add.php" method="POST" class="white">
         <label for="">Your Email:</label>
-        <input type="text" name="email" value="<?php echo empty($email) ? '' : $email;  ?>">
+        <input type="text" name="email" value="<?php echo empty($email) ? '' : htmlspecialchars($email);  ?>">
         <div class="error-text"><?php echo $errors['email']; ?> </div>
 
         <label for="">Title:</label>
-        <input type="text" name="title" value="<?php echo empty($title) ? '' : $title;  ?>">
+        <input type="text" name="title" value="<?php echo empty($title) ? '' : htmlspecialchars($title);  ?>">
         <div class="error-text"><?php echo $errors['title']; ?></div>
 
 
         <label for="">Ingredients (comma separated):</label>
-        <input type="text" name="ingredients" value="<?php echo empty($ingredients) ? '' : $ingredients ?>">
+        <input type="text" name="ingredients" value="<?php echo empty($ingredients) ? '' : htmlspecialchars($ingredients) ?>">
         <div class="error-text"><?php echo $errors['ingredients']; ?></div>
 
         <div class="center">
