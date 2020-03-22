@@ -56,7 +56,10 @@ if (isset($_POST['submit'])) {
     //Are the errors in form or not - show info
 
     if (!array_filter($errors)) {
+
+
         header('Location: index.php'); //return true if something is in our errors array (but we negate it so we react to situation when is no errors - we move back to main page.);
+
     }
 
     // array_filter($errors) ?  'errors' :  'no errors';
@@ -72,7 +75,7 @@ if (isset($_POST['submit'])) {
 <?php require 'templates/header.php'; ?>
 
 <section class="container grey-text">
-    <h4 class="center">Add something</h4>
+    <h4 class="center">Add recipe</h4>
     <form action="add.php" method="POST" class="white">
         <label for="">Your Email:</label>
         <input type="text" name="email" value="<?php echo empty($email) ? '' : htmlspecialchars($email);  ?>">
