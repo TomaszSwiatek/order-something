@@ -36,7 +36,8 @@ mysqli_close($conn);
                         </ul>
                     </div>
                     <div class="card-action right-align">
-                        <a href="#" class="brand-text">more info</a>
+                        <!-- in href we re doing something like get request which we can use just in details.php -->
+                        <a href="details.php?id=<?php echo $recipe['id']; ?>" class="brand-text">more info</a>
                     </div>
                 </div>
             </div>
