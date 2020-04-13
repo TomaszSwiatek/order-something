@@ -21,14 +21,29 @@ mysqli_close($conn);
 
 <?php require 'templates/header.php'; ?>
 
-<h4 class="center grey-text">Receipts!</h4>
+
 <div class="container">
+    <div class="section">
+        <div class="row">
+            <!-- so it has width 6/12, but is moved to the right cca 2/12 -->
+            <div class="col s12 m6 offset-m2">
+                <blockquote class="flow-text ">
+                    A recipe has no soul. You as the cook must bring soul to the recipe.
+                    <br> Thomas Keller
+                </blockquote>
+            </div>
+        </div>
+    </div>
     <div class="row">
+
+
         <?php foreach ($recipes as $recipe) { ?>
-            <div class="col s6 md3">
-                <div class="card z-depth-0">
+            <div class="col s12 m6 l4 xl3">
+                <div class="card  hoverable">
                     <div class="card-content center">
+                        <img src="img/note.svg" alt="sticky note image to each recipe item" class="index-item-img">
                         <h6><?php echo htmlspecialchars($recipe['title']); ?></h6>
+                        <p>Ingredients:</p>
                         <ul>
                             <?php foreach (explode(',', $recipe['ingredients']) as $ingredient) { ?>
                                 <li> <?php echo htmlspecialchars($ingredient);  ?></li>
@@ -49,9 +64,9 @@ mysqli_close($conn);
         <!-- how many recipes are on site? -->
         <?php if (count($recipes) <= 3) :
         ?>
-            <p><?php echo 'There are only 3 or less recipes' ?></p>
+            <p class="flow-text center-align"><?php echo 'There are only 3 or less recipes' ?></p>
         <?php else : ?>
-            <p><?php echo 'There are more than 3 recipes' ?></p>
+            <p class="flow-text center-align"><?php echo 'There are more than 3 recipes' ?></p>
         <?php endif; ?>
         <!--END - how many recipes are on site? -->
     </div> <!-- end of row -->
